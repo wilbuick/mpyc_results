@@ -446,11 +446,6 @@ def generate_points_table(sailresults, highpoint, num_races, args):
     '''
 
     print('Generating points table...')
-    if args.fpp:
-        outfilename = "htmloutput/pointstable" + Globals.season + "_fpp.htm"
-    else:
-        outfilename = "htmloutput/pointstable" + Globals.season + ".htm"
-    file = open(outfilename, 'w')
 
     sortedsailresults = sorted(sailresults, key=lambda b: b.props.name)
     # Season score is a dict containing the helm name the total points, and
@@ -491,15 +486,22 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                 [helmres.props.name, round(helmres.points),
                  "-".join(results10)])
     else:
-        formattedresults = []
+        results_ilca7 = {}
+        results_ilca6 = {}
+        results_ilca4 = {}
         resultshighpoint = {}
+
         for helmres in table:
-            if helmres.props.club == "mpyc":
-                results10 = helmres.results[-10:]
-                # print(results10)
-                # print(helm.results.items())
-                if helmres.props.name not in resultshighpoint.keys():
-                    resultshighpoint[helmres.props.name] = [
+            if helmres.props.club != "mpyc":
+                continue
+
+            results10 = helmres.results[-10:]
+            # print(results10)
+            # print(helm.results.items())
+
+            if helmres.props.yclass == 'ILCA 7':
+                if helmres.props.name not in results_ilca7.keys():
+                    results_ilca7[helmres.props.name] = [
                         helmres.props.yclass,
                         round(float(helmres.props.comptotal)), results10,
                         helmres.races,
@@ -508,33 +510,123 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                         f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
                         f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
                 else:
-                    resultshighpoint[helmres.props.name][1] += round(
+                    results_ilca7[helmres.props.name][1] += round(
                         float(helmres.props.comptotal))
 
-                    resultshighpoint[helmres.props.name][2].extend(results10)
-                    resultshighpoint[helmres.props.name][3] += helmres.races
-                    resultshighpoint[helmres.props.name][4] += helmres.placetally[1]
-                    resultshighpoint[helmres.props.name][5] += helmres.placetally[2]
-                    resultshighpoint[helmres.props.name][6] += helmres.placetally[3]
-                    resultshighpoint[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
-                    resultshighpoint[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+                    results_ilca7[helmres.props.name][2].extend(results10)
+                    results_ilca7[helmres.props.name][3] += helmres.races
+                    results_ilca7[helmres.props.name][4] += helmres.placetally[1]
+                    results_ilca7[helmres.props.name][5] += helmres.placetally[2]
+                    results_ilca7[helmres.props.name][6] += helmres.placetally[3]
+                    results_ilca7[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
+                    results_ilca7[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+            elif helmres.props.yclass == 'ILCA 6':
+                if helmres.props.name not in results_ilca6.keys():
+                    results_ilca6[helmres.props.name] = [
+                        helmres.props.yclass,
+                        round(float(helmres.props.comptotal)), results10,
+                        helmres.races,
+                        helmres.placetally[1],
+                        helmres.placetally[2], helmres.placetally[3],
+                        f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
+                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+                else:
+                    results_ilca6[helmres.props.name][1] += round(
+                        float(helmres.props.comptotal))
+
+                    results_ilca6[helmres.props.name][2].extend(results10)
+                    results_ilca6[helmres.props.name][3] += helmres.races
+                    results_ilca6[helmres.props.name][4] += helmres.placetally[1]
+                    results_ilca6[helmres.props.name][5] += helmres.placetally[2]
+                    results_ilca6[helmres.props.name][6] += helmres.placetally[3]
+                    results_ilca6[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
+                    results_ilca6[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+            elif helmres.props.yclass == 'ILCA 4':
+                if helmres.props.name not in results_ilca4.keys():
+                    results_ilca4[helmres.props.name] = [
+                        helmres.props.yclass,
+                        round(float(helmres.props.comptotal)), results10,
+                        helmres.races,
+                        helmres.placetally[1],
+                        helmres.placetally[2], helmres.placetally[3],
+                        f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
+                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+                else:
+                    results_ilca4[helmres.props.name][1] += round(
+                        float(helmres.props.comptotal))
+
+                    results_ilca4[helmres.props.name][2].extend(results10)
+                    results_ilca4[helmres.props.name][3] += helmres.races
+                    results_ilca4[helmres.props.name][4] += helmres.placetally[1]
+                    results_ilca4[helmres.props.name][5] += helmres.placetally[2]
+                    results_ilca4[helmres.props.name][6] += helmres.placetally[3]
+                    results_ilca4[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
+                    results_ilca4[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+
+            if helmres.props.name not in resultshighpoint.keys():
+                resultshighpoint[helmres.props.name] = [
+                    helmres.props.yclass,
+                    round(float(helmres.props.comptotal)), results10,
+                    helmres.races,
+                    helmres.placetally[1],
+                    helmres.placetally[2], helmres.placetally[3],
+                    f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
+                    f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+            else:
+                resultshighpoint[helmres.props.name][1] += round(
+                    float(helmres.props.comptotal))
+
+                resultshighpoint[helmres.props.name][2].extend(results10)
+                resultshighpoint[helmres.props.name][3] += helmres.races
+                resultshighpoint[helmres.props.name][4] += helmres.placetally[1]
+                resultshighpoint[helmres.props.name][5] += helmres.placetally[2]
+                resultshighpoint[helmres.props.name][6] += helmres.placetally[3]
+                resultshighpoint[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
+                resultshighpoint[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+
+        formattedresults = []
+        formattedresults_ilca7 = []
+        formattedresults_ilca6 = []
+        formattedresults_ilca4 = []
+
+        datasets = {
+            'ilca7': results_ilca7,
+            'ilca6': results_ilca6,
+            'ilca4': results_ilca4,
+            'all': resultshighpoint,
+        }
 
         # go through each helm and reorder results from last race to first
         # and trim any races greater than 10 entries
-        for helmname in resultshighpoint.keys():
-            # print(resultshighpoint[key][1])
-            # resort in reverse race order
-            sortemp = sorted(resultshighpoint[helmname][2], reverse=True)
-            # print(sortemp)
-            # Now process into a comma seperated list of positions while
-            # removing the race foreign key.
-            temp = [item[1] for item in sortemp][0:10]
-            # print(temp)
-            resultshighpoint[helmname][2] = ",".join(temp)
-            # Add to formatted list to pass to the template.
-            formattedresults.append(
-                [helmname])
-            formattedresults[-1].extend(resultshighpoint[helmname][:])
+        for key, dataset in datasets.items():
+            for helmname in dataset.keys():
+                # print(dataset[key][1])
+                # resort in reverse race order
+                sortemp = sorted(dataset[helmname][2], reverse=True)
+                # print(sortemp)
+                # Now process into a comma seperated list of positions while
+                # removing the race foreign key.
+                temp = [item[1] for item in sortemp][0:10]
+                # print(temp)
+                dataset[helmname][2] = ",".join(temp)
+                # Add to formatted list to pass to the template.
+
+                if key == 'ilca7':
+                    formattedresults_ilca7.append(
+                        [helmname])
+                    formattedresults_ilca7[-1].extend(dataset[helmname][:])
+                elif key == 'ilca6':
+                    formattedresults_ilca6.append(
+                        [helmname])
+                    formattedresults_ilca6[-1].extend(dataset[helmname][:])
+                elif key == 'ilca4':
+                    formattedresults_ilca4.append(
+                        [helmname])
+                    formattedresults_ilca4[-1].extend(dataset[helmname][:])
+                elif key == 'all':
+                    formattedresults.append(
+                        [helmname])
+                    formattedresults[-1].extend(dataset[helmname][:])
 
     # save current table position to file
     #last_table_state = save_table_position(formattedresults, num_races)
@@ -546,12 +638,49 @@ def generate_points_table(sailresults, highpoint, num_races, args):
         template = env.get_template('points_table_template.html')
     else:
         if args.fpp:
+            outfilename = "htmloutput/pointstable" + Globals.season + "_fpp.htm"
             template = env.get_template('points_table_template_highpoint_fpp.html')
         else:
+            outfilename = "htmloutput/pointstable" + Globals.season + ".htm"
             template = env.get_template('points_table_template_highpoint.html')
-    print(template.render(updatetime=Globals.todayformat,
-                          table=formattedresults,
-                          races=num_races), file=file)
+
+        with open(outfilename, 'w') as file:
+            print(
+                template.render(
+                    updatetime=Globals.todayformat,
+                    table=formattedresults,
+                    races=num_races),
+                file=file)
+
+        outfilename = f"htmloutput/pointstable_ilca7_{Globals.season}.htm"
+        with open(outfilename, 'w') as file:
+            template = env.get_template('points_table_template_ilca7.html')
+            print(
+                template.render(
+                    updatetime=Globals.todayformat,
+                    table=formattedresults_ilca7,
+                    races=num_races),
+                file=file)
+
+        outfilename = f"htmloutput/pointstable_ilca6_{Globals.season}.htm"
+        with open(outfilename, 'w') as file:
+            template = env.get_template('points_table_template_ilca6.html')
+            print(
+                template.render(
+                    updatetime=Globals.todayformat,
+                    table=formattedresults_ilca6,
+                    races=num_races),
+                file=file)
+
+        outfilename = f"htmloutput/pointstable_ilca4_{Globals.season}.htm"
+        with open(outfilename, 'w') as file:
+            template = env.get_template('points_table_template_ilca4.html')
+            print(
+                template.render(
+                    updatetime=Globals.todayformat,
+                    table=formattedresults_ilca4,
+                    races=num_races),
+                file=file)
 
 
 def initialise_matrix(sailresults):  # initialise matrix
