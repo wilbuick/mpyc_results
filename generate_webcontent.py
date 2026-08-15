@@ -495,20 +495,21 @@ def generate_points_table(sailresults, highpoint, num_races, args):
             if helmres.props.club != "mpyc":
                 continue
 
-            results10 = helmres.results[-10:]
-            # print(results10)
-            # print(helm.results.items())
-
             if helmres.props.yclass == 'ILCA 7':
+                results10 = helmres.results[-10:]
+
                 if helmres.props.name not in results_ilca7.keys():
                     results_ilca7[helmres.props.name] = [
                         helmres.props.yclass,
-                        round(float(helmres.props.comptotal)), results10,
+                        round(float(helmres.props.comptotal)),
+                        results10,
                         helmres.races,
                         helmres.placetally[1],
-                        helmres.placetally[2], helmres.placetally[3],
+                        helmres.placetally[2],
+                        helmres.placetally[3],
                         f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
-                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"
+                    ]
                 else:
                     results_ilca7[helmres.props.name][1] += round(
                         float(helmres.props.comptotal))
@@ -521,15 +522,20 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                     results_ilca7[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
                     results_ilca7[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
             elif helmres.props.yclass == 'ILCA 6':
+                results10 = helmres.results[-10:]
+
                 if helmres.props.name not in results_ilca6.keys():
                     results_ilca6[helmres.props.name] = [
                         helmres.props.yclass,
-                        round(float(helmres.props.comptotal)), results10,
+                        round(float(helmres.props.comptotal)),
+                        results10,
                         helmres.races,
                         helmres.placetally[1],
-                        helmres.placetally[2], helmres.placetally[3],
+                        helmres.placetally[2],
+                        helmres.placetally[3],
                         f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
-                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"
+                    ]
                 else:
                     results_ilca6[helmres.props.name][1] += round(
                         float(helmres.props.comptotal))
@@ -542,15 +548,20 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                     results_ilca6[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
                     results_ilca6[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
             elif helmres.props.yclass == 'ILCA 4':
+                results10 = helmres.results[-10:]
+
                 if helmres.props.name not in results_ilca4.keys():
                     results_ilca4[helmres.props.name] = [
                         helmres.props.yclass,
-                        round(float(helmres.props.comptotal)), results10,
+                        round(float(helmres.props.comptotal)),
+                        results10,
                         helmres.races,
                         helmres.placetally[1],
-                        helmres.placetally[2], helmres.placetally[3],
+                        helmres.placetally[2],
+                        helmres.placetally[3],
                         f"{helmres.placetally[1] / helmres.races * 100:4.1f}",
-                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}"]
+                        f"{float(helmres.props.comptotal) / helmres.races:4.1f}",
+                    ]
                 else:
                     results_ilca4[helmres.props.name][1] += round(
                         float(helmres.props.comptotal))
@@ -562,6 +573,10 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                     results_ilca4[helmres.props.name][6] += helmres.placetally[3]
                     results_ilca4[helmres.props.name][7] = f"{resultshighpoint[helmres.props.name][4] / resultshighpoint[helmres.props.name][3] * 100:4.1f}"
                     results_ilca4[helmres.props.name][8] = f"{resultshighpoint[helmres.props.name][1] / resultshighpoint[helmres.props.name][3]:4.1f}"                
+
+            results10 = helmres.results[-10:]
+            # print(results10)
+            # print(helm.results.items())
 
             if helmres.props.name not in resultshighpoint.keys():
                 resultshighpoint[helmres.props.name] = [
@@ -652,6 +667,7 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                     races=num_races),
                 file=file)
 
+        """
         outfilename = f"htmloutput/pointstable_ilca7_{Globals.season}.htm"
         with open(outfilename, 'w') as file:
             template = env.get_template('points_table_template_ilca7.html')
@@ -681,6 +697,7 @@ def generate_points_table(sailresults, highpoint, num_races, args):
                     table=formattedresults_ilca4,
                     races=num_races),
                 file=file)
+        """
 
 
 def initialise_matrix(sailresults):  # initialise matrix
